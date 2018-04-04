@@ -1,26 +1,123 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
+<!-- this an HTML comment -->
+<!-- /* is his a CSS comment */  -->
 
+<!-- Misc links for reference -->
+<!-- https://css-tricks.com/ -->
+<!-- http://jsbin.com/osejit/10/edit?html,css,output -->
+<!-- https://kilianvalkhof.com/2008/css-html/understanding-css-positioning-part-1/ -->
+<!-- https://www.w3.org/TR/html401/interact/forms.html#h-17.7 -->
+<!-- what is setattribute, textarea -->
+<!-- https://www.w3schools.com/css/tryit.asp?filename=trycss_line-height -->
+<!-- https://stackoverflow.com/questions/18142652/show-message-instead-of-alert -->
+<!-- Error and Feedback Notification -->
+<!-- https://www.w3.org/WAI/tutorials/forms/notifications/ -->
+<!-- ========================================================================== -->
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<!-- =======================  <Head>  =============================== -->
 <head>
     <meta charset="utf-8" />
-    <title></title>
+    <title>On-line Membership Application</title>
+    <!------------ Including  jQuery Date UI with CSS --------------
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css"> 
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/start/jquery-ui.css" type="text/css" media="all">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    -->
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/start/jquery-ui.css"></link>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <style type="text/css">
+        div.ui-datepicker {
+            font-size: 20px;  /*was originally set to 10px*/
+        }
+    </style>  
+
+    <!-- https://www.tutorialspoint.com/jqueryui/jqueryui_datepicker.htm -->
+    <script>
+        $(document).ready(function () {
+            $("#datepicker").datepicker({
+                changeYear: true,
+                changeMonth: true,
+                yearRange: "1910:+1",
+                beforeShow: function (textbox, instance) {
+                    instance.dpDiv.css({
+                        marginTop: (-textbox.offsetHeight) + 'px',
+                        marginLeft: textbox.offsetWidth + 'px'
+                    });
+                }
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#co_datepicker").datepicker({
+                changeYear: true,
+                changeMonth: true,
+                yearRange: "1910:+1",
+                beforeShow: function (textbox, instance) {
+                    instance.dpDiv.css({
+                        marginTop: (-textbox.offsetHeight) + 'px',
+                        marginLeft: textbox.offsetWidth + 'px'
+                    });
+                }
+            });
+        });
+    </script>
+
     <style>
-        .tab0 {position:absolute; left:25px; }
-        .tab1 {position:absolute; left:50px; }
-        .tab2 {position:absolute; left:75px; }
-        .tab3 {position:fixed; left:120px; }
-        .tab4 {position:absolute; margin-left:100px; }
-        .tab5 { display:inline-block; margin-left:100px;}
-        .tab6 { display:inline-block; margin:110px;}
+        /* The position property specifies the type of positioning method used
+           for an element (static, relative, fixed, absolute or sticky). 
+           fixed: position relative to viewpoint, maintains position even while scrolling down/up page*/
+        .tab0 {position:absolute; left:75px; }
+        .tab1 {position:absolute; left:250px; }
+        .tab2 {position:absolute; left:200px; }
+        .tab3 {position:absolute; left:125px; }
+        .tab4 {position:absolute; left:400px; }
+        .tab5 {position:absolute; margin-left:150px; }
+        .tab6 { display:inline-block; margin-left:100px;}
+        .tab7 { display:inline-block; margin:140px;}
+        /* add some "blank area" around your element. So you can use the following CSS tags:
+           padding: 5px;
+           padding-top: 5px;
+           padding-bottom: 5px;
+           padding-left: 5px;
+           padding-right: 5px;
+        */
+    </style>
+
+    <style>
+        /* used to modify line height between two related text boxes (ie. email, confirm email)*/
+        br.small {
+            line-height: 0.7;
+        }
     </style>
     
-    <!-- reference Moment.js library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.0/moment.js"
-            type="text/javascript"></script>
-    <!--
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.0/moment.min.js"></script>
-    -->
-    
+    <script language="javascript">
+        function checkphone(phoneId)
+        {
+            //pattern="/^(\([0-9]{3}\)\s*|[0-9]{3}\-)[0-9]{3}-[0-9]{4}$/"
+            var phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+            var inputtxt = document.getElementById(phoneId);
+            
+            if (inputtxt.value != '') {
+                if (inputtxt.value.match(phoneno)) {
+                    return true;
+                }
+                else {
+                    window.alert("Invalid Phone Number (xxx-xxx-xxxx): " + inputtxt.value);
+                    //this brings up a single page and user needs to use the backarrow to return/continue
+                    //document.writeln("invalid phone number entered.");
+                    return false;
+                }
+            }
+        }
+    </script>
+
     <script language="javascript">
         function hideMemTypes(){
             document.getElementById("q1").style.display="none";
@@ -28,218 +125,263 @@
             document.getElementById("q3").style.display="none";
             document.getElementById("q4").style.display="none";
             document.getElementById("q5").style.display="none";
-            document.getElementById("comember").style.display="none";
+            document.getElementById("comem").style.display = "none";
+            document.getElementById("comemsignature").style.display = "none";
         };
+    </script>
+
+    <script language="javascript">
+        // member category - Individual or Joint membership
+        function showMemberCat(x) {
+            if (x <= 1) {
+                document.getElementById("comem").style.display = "none";
+                document.getElementById("comemsignature").style.display = "none";
+            }
+            else if (x >= 2) {
+                document.getElementById("comem").style.display = "inline";
+                document.getElementById("comemsignature").style.display = "inline";
+            }
+        }
     </script>
     
     <script language="javascript">
         function showMemberType(x){
           var d= new Date();
-          if(x >= 5){
+          if(x >= 5){ //this is a renewal - no need to show prorated options
               document.getElementById("q1").style.display="none";
               document.getElementById("q2").style.display="none";
               document.getElementById("q3").style.display="none";
               document.getElementById("q4").style.display="none";
               document.getElementById("q5").style.display="inline";
-              document.getElementById("co-member").style.display="none";
+              //document.getElementById("comem").style.display = "none";
           }
-          else if(d.getMonth() <= 9 && d.getMonth() >= 7){
+          else if(d.getMonth() <= 9 && d.getMonth() >= 7){          //1st quarter
               document.getElementById("q1").style.display="inline";
               document.getElementById("q2").style.display="none";
               document.getElementById("q3").style.display="none";
               document.getElementById("q4").style.display="none";
               document.getElementById("q5").style.display="none";
-              document.getElementById("co-member").style.display="none";
+              //document.getElementById("comem").style.display = "none";
           }
-          else if(d.getMonth() <= 6 & d.getMonth() >= 4){
+          else if(d.getMonth() <= 6 & d.getMonth() >= 4){           //4th quarter
               document.getElementById("q1").style.display="none";
               document.getElementById("q2").style.display="none";
               document.getElementById("q3").style.display="none";
               document.getElementById("q4").style.display="inline";
               document.getElementById("q5").style.display="none";
-              document.getElementById("co-member").style.display="none";
+              //document.getElementById("comem").style.display = "none";
           }
-          else if(d.getMonth() <= 3 && d.getMonth() >= 1){
+          else if(d.getMonth() <= 3 && d.getMonth() >= 1){          //3rd auarter
               document.getElementById("q1").style.display="none";
               document.getElementById("q2").style.display="none";
               document.getElementById("q3").style.display="inline";
               document.getElementById("q4").style.display="none";
               document.getElementById("q5").style.display="none";
-              document.getElementById("co-member").style.display="none";
+              //document.getElementById("comem").style.display = "none";
           }
-          else if(d.getMonth() <= 12 && d.getMonth() >= 10){
+          else if(d.getMonth() <= 12 && d.getMonth() >= 10){        //2nd quarter
               document.getElementById("q1").style.display="none";
               document.getElementById("q2").style.display="inline";
               document.getElementById("q3").style.display="none";
               document.getElementById("q4").style.display="none";
               document.getElmentById("q5").style.display="none";
-              document.getElementById("co-member").style.display="none";
+              //document.getElementById("comem").style.display = "none";
           }
       }
     </script>
- 
-</head>
-<body onload="hideMemTypes()">
-    <h1>CPHC On-line Membership Application</h1>
-    <p>To apply for membership, please complete all qustions*</p>
-    
-    <!--
-    <div class="container">
-      <h2>Moment Date</h2>
-      <div id="displayMoment"></div>
-    
-      <h2>JavaScript Date</h2>
-     <div id="displayJsDate"></div>
-    </div>
-    
+
     <script type="text/javascript">
-    ( function()
-    {
-      //instantiate a moment object
-      var NowMoment = moment();
-      
-      //instantiate a JavaScript Date object
-      var NowDate = new Data();
-      
-      //display value of moment object in #displayMoment div
-      var eDisplayMoment = document.getElementById('displayMoment');
-      eDisplayMoment.innerHTML = NowMoment;
-      
-      //display value of Date object in #displayJsDate div
-      var eDisplayDate = document.getElementById('displayJsDate');
-      eDisplayDate.innerHTML = NowDate;
-    })();
+    function confirmEmail() {
+        var email = document.getElementById("email").value
+        var confemail = document.getElementById("confemail").value
+        if(email != confemail) {
+            alert('Email Not Matching!');
+        }
+    }
     </script>
-    -->
-        
+
+    <script type="text/javascript">
+    function confirmCoEmail() {
+        var email = document.getElementById("co_email").value
+        var confemail = document.getElementById("co_confemail").value
+        if(email != confemail) {
+            alert('Email Not Matching!');
+        }
+    }
+    </script>
+
+    <script type="text/javascript">
+    function validateMail(p1, p2) {
+      if (p1.value != p2.value || p1.value == '' || p2.value == '') {
+        p2.setCustomValidity('email incorrect');
+      } else {
+        p2.setCustomValidity('');
+      }
+    }
+    </script>
+</head>
+<!-- =======================  <Body>  =============================== -->
+<body onload="hideMemTypes()" style="background:url(./pb11d.jpg) no-repeat 100% 0;">
+<h1>CPHC On-line Membership Application</h1>
+<p>To apply for membership, please complete all questions<b>*</b></p>
+<!-- =======================  <Form>  =============================== -->
 <form style="height: 182px">
   <h4>Chicago ParrotHead Club Membership year runs from October 1 to September 31</h4>
-  <div
-  <b>Membership:</b>
-  &nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="membershipType" onclick="showMemberType(2)" value="newMem"> New<br>  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <input type="radio" name="membershipType" onclick="showMemberType(5)" value="renewMem"> Renewal<br>     
-  </div>      
-  <div id="q5">
-    <br>
-    <b>Annual Renewal/Membership</b> <br>
-    &nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="renewType" value="renewIndividual"> Individual ($25)  
-    &nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="renewType" value="renewJoint"> Joint ($35)
-    <br>
-  </div>
-  <div id="q4">
-    <br>
-    <b>New MemberApp Date:4th Quarter (7/1-9/31) Expires: 9/31/2018</b> <br>
-    &nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="newType" value="newQ4Individual"> Individual ($25) 
-    &nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="newType" value="newQ4Joint"> Joint ($35)
-    <br>
-  </div>
-  <div id="q3">
-    <br>
-    <b>New MemberApp Date:3rd Quarter (4/1-6/31) Expires: 9/31/2018</b> <br>
-    &nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="renewType" value="newQ3Individual"> Individual ($7) 
-    &nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="renewType" value="newQ3Joint"> Joint ($9)
-    <br>
-  </div>
-  <div id="q2">
-    <br>
-    <b>New MemberApp Date:2nd Quarter (1/1-3/31) Expires: 9/31/2018</b> <br>
-    &nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="renewType" value="newQ2Individual"> Individual ($13)  
-    &nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="renewType" value="newQ2Joint"> Joint ($18)
-    <br>
-  </div>
-  <div id="q1">
-    <br>
-    <b>New MemberApp Date:1st Quarter (10/1-12/31) Expires: 9/31/2018</b> <br>
-    &nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="renewType" value="newQ1Individual"> Individual ($19) 
-    &nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="renewType" value="newQ1Joint"> Joint ($27)
-    <br>
-  </div>    
+<div>
+  <b>Membership*:</b>
+  <span class="tab3"><input type="radio" name="membershipType" onclick="showMemberType(2)" value="newMem"> New</span><br>
+  <span class="tab3"><input type="radio" name="membershipType" onclick="showMemberType(5)" value="renewMem"> Renewal</span><br>
+</div>
+<div id="q5"><br>
+  <b>Annual Renewal/Membership</b> <br>
+  <span class="tab3"><input type="radio" name="renewType" onclick="showMemberCat(1)" value="renewIndividual"> Individual ($25)</span><br>
+  <span class="tab3"><input type="radio" name="renewType" onclick="showMemberCat(2)" value="renewJoint"> Joint ($35)</span><br>
+  <span class="tab3">PLEASE NOTE: A $0.30 + 3% processing fee will be added to the amount indicated above.</span>
   <br>
-  <b>Name:</b>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  First Name:&nbsp<input type="text" name="fname" placeholder="First name"><br><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  Last Name:
-  <input type="text" name="lname" placeholder="Last name"><br>
-<br>
-  <b>Nickname:</b>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <input type="text" name="nname" placeholder="Nick name"><br>
-<br>
-  <b>Birthday:</b>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <input type="date" id="bday" name="bday"placeholder="mm/dd/yyyy"><span class="validity"></span><br>
-<br>
-  <b>Cell Phone:</b>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <input type="tel" id="cphone" name="cphone" placeholder="123-456-7890"><span class="validity"></span><br>
-<br>
-  <b>Home/Work Phone:</b>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <input type="tel" id="hphone" name="hphone" placeholder="123-456-7890"><span class="validity"></span><br>
-<br>
-  <b>E-mail:</b>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <input type="email" id="email" name="email" placeholder="user@domain.com"><span class="validity"></span><br><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <input type="email" id="email" name="email2" placeholder="Confirm Email"><span class="validity"></span><br>
-<br>
-    <h4>You will receive an email and be invited to join our Yahoo E-mail Group (this is our primary source of communication). Instructions for joining will be contained in the email.</h4>
-    <br>
-<!--                  Co-Member                                           -->
-<div id="co-member">
-  <b>Co-Member Name:</b>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  First Name:&nbsp<input type="text" name="co_fname" placeholder="First name"><br><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  Last Name:
-  <input type="text" name="co_lname" placeholder="Last name"><br>
+</div>
+<div id="q4"><br>
+  <b>New Member -&nbsp;Expires: 9/31/2019</b> (4th Quarter Application 7/1-9/31) <br>
+  <span class="tab3"><input type="radio" name="newType" onclick="showMemberCat(1)" value="newQ4Individual"> Individual ($25)</span><br>
+  <span class="tab3"><input type="radio" name="newType" onclick="showMemberCat(2)" value="newQ4Joint"> Joint ($35)</span><br />
+  <span class="tab3">PLEASE NOTE: A $0.30 + 3% processing fee will be added to the amount indicated above.</span>
   <br>
-  <b>Co-Member Nickname:</b>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <input type="text" name="co_nname" placeholder="Nick name"><br>
+</div>
+<div id="q3"><br>
+  <b>New Member -&nbsp;Expires: 9/31/2018</b> (3rd Quarter Application 4/1-6/31)<br>
+  <span class="tab3"><input type="radio" name="renewType" onclick="showMemberCat(1)" value="newQ3Individual"> Individual ($7) - Prorated</span><br>
+  <span class="tab3"><input type="radio" name="renewType" onclick="showMemberCat(2)" value="newQ3Joint"> Joint ($9) - Prorated</span><br />
+  <span class="tab3">PLEASE NOTE: A $0.30 + 3% processing fee will be added to the amount indicated above.</span>
   <br>
-  <b>Co-Member Birthday:</b>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <input type="date" id="bday" name="co_bday"placeholder="mm/dd/yyyy"><span class="validity"></span><br>
+</div>
+<div id="q2"><br>
+  <b>New Member -&nbsp;Expires: 9/31/2018</b> (2nd Quarter Application 1/1-3/31)<br>
+  <span class="tab3"><input type="radio" name="renewType" onclick="showMemberCat(1)" value="newQ2Individual"> Individual ($13) - Prorated</span><br>
+  <span class="tab3"><input type="radio" name="renewType" onclick="showMemberCat(2)" value="newQ2Joint"> Joint ($18) - Prorated</span><br />
+  <span class="tab3">PLEASE NOTE: A $0.30 + 3% processing fee will be added to the amount indicated above.</span>
   <br>
-  <b>Co-Member Cell Phone:</b>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <input type="tel" id="cphone" name="co_cphone" placeholder="123-456-7890"><span class="validity"></span><br>
+</div>
+<div id="q1"><br>
+  <b>New Member -&nbsp;Expires: 9/31/2018</b> (1st Quarter Application 10/1-12/31)<br>
+  <span class="tab3"><input type="radio" name="renewType" onclick="showMemberCat(1)" value="newQ1Individual"> Individual ($19) - Prorated</span><br>
+  <span class="tab3"><input type="radio" name="renewType" onclick="showMemberCat(2)" value="newQ1Joint"> Joint ($27) - Prorated</span><br>
+  <span class="tab3">PLEASE NOTE: A $0.30 + 3% processing fee will be added to the amount indicated above.</span>
   <br>
-  <b>Co-Member Home/Work Phone:</b>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <input type="tel" id="hphone" name="co_hphone" placeholder="123-456-7890"><span class="validity"></span><br>
-  <br>
-  <b>Co-Member E-mail:</b>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <input type="email" id="email" name="co_email" placeholder="user@domain.com"><span class="validity"></span><br><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;              
-  <input type="email" id="email" name="co_email2" placeholder="Confirm Email"><span class="validity"></span><br>
-  <br>
-</div> 
-  <b>Address:</b>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  Street Addess:&nbsp<input type="text" name="addr1"><br><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  Street Addess Line 2:&nbsp<input type="text" name="addr2"><br><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  City:&nbsp<input type="text" name="city">
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      
-  State:&nbsp<input type="text" name="state"><br><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;              
-  Zip Code:&nbsp<input type="text" name="zip">
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  County:&nbsp<input type="text" name="county"><br><br>
+</div><br>
+<!-- Member Information-->
+<div id="member">
+  <div style="line-height:160%;">
+    <b>Name*:</b>
+    <span class="tab3">First&nbsp;Name:&nbsp<input type="text" id="fname" name="fname" placeholder="First name" required></span><br>
+    <span class="tab3">Last&nbsp;Name:&nbsp<input type="text" id="lname" name="lname" placeholder="Last name" required></span>
+  </div><br><br>
+  <b>Nickname:</b><span class="tab3"><input type="text" id="nname" name="nname" placeholder="Nick name"></span><br><br>
+  <b>Birthday*:</b><span class="tab3"><input type="text" placeholder="mm/dd/yyyy" name="bday" id="datepicker" required></span><br><br>
+  <b>Cell Phone*:</b><span class="tab3"><input type="text" id="cphone" name="cphone" placeholder="123-456-7890" onblur=checkphone("cphone") required></span><br><br>
+  <b>Hm/Wk Phone:</b><span class="tab3"><input type="text" id="hphone" name="hphone" placeholder="123-456-7890" onblur=checkphone("hphone") /></span><br><br>
+  <div style="line-height:160%;">
+    <b>E-mail*:</b>
+    <span class="tab3"><input type="text" id="email" name="email" placeholder="user@domain.com"></span><br>
+    <span class="tab3"><input type="text" id="confemail" name="emailconfirm" placeholder="Confirm Email" onblur="confirmEmail()" required></span>
+  </div><br>
+</div>
+<!-- Co-Member -->
+<div id="comem"><br>
+  <div style="line-height:160%;">
+    <b>CoMember Name:</b>
+    <span class="tab2">First&nbsp;Name:&nbsp<input type="text" id="co_fname" name="co_fname" placeholder="First name"></span><br>
+    <span class="tab2">Last&nbsp;Name:&nbsp<input type="text" id="co_lname" name="co_lname" placeholder="Last name"></span>
+  </div><br><br>
+  <b>CoMember Nickname:</b><span class="tab2"><input type="text" id="co_nname" name="co_nname" placeholder="Nick name"></span><br><br>
+  <b>CoMember Birthday*:</b><span class="tab2"><input type="text" placeholder="mm/dd/yyyy" name="co_bday" id="co_datepicker" required></span><br><br>
+  <b>CoMember Cell Phone*:</b>
+  <span class="tab2"><input type="tel" id="co_cphone" name="co_cphone" placeholder="123-456-7890" onblur=checkphone("co_cphone") required></span><br><br>
+  <b>CoMember Hm/Wk Phone:</b>
+  <span class="tab2"><input type="tel" id="co_hphone" name="co_hphone" placeholder="123-456-7890" onblur=checkphone("co_hphone")></span><br><br>
+  <div style="line-height:160%;">
+    <b>CoMember E-mail:</b>
+      <span class="tab2"><input type="text" id="co_email" name="email" placeholder="user@domain.com"></span><br>
+      <span class="tab2"><input type="text" id="co_confemail" name="emailconfirm" placeholder="Confirm Email" onblur="confirmCoEmail()" required></span>
+  </div><br>
+<!--
+  <div class="required" style="line-height:160%;">
+      <b>CoMember E-mail:</b>
+      <span class="tab2"><input type='email' id='p1'></span><br><br>
+      <span class="tab2"><input type='email' onfocus="validateMail(document.getElementById('p1'), this);"
+                                             oninput="validateMail(document.getElementById('p1'), this);"></span>
+</div>
+-->
+</div>
+  <h4>You will receive an email and be invited to join our Yahoo E-mail Group (this is our primary source of communication). Instructions for joining will be contained in the email.</h4>
+<div id="address">
+  <b>Address*:</b>
+  <span class="tab3">Street Address:&nbsp<input type="text" id="addr1" name="addr1"></span><br><br>
+  <span class="tab3">Street Address Line 2:&nbsp<input type="text" id="addr2" name="addr2"></span><br><br>
+  <span class="tab3">City:&nbsp<input type="text" id="city" name="city"></span>
+  <span class="tab4">State:&nbsp<input type="text" id="state" name="state"></span><br><br>
+  <span class="tab3">Zip Code:&nbsp<input type="text" id="zip" name="zip"></span>
+  <span class="tab4">County:&nbsp<input type="text" id="county" name="county"></span><br><br>
+</div>
+<hr>
+<div id="volunteer">
   <h4> By checking the boxes below you can choose whether or not to be published in the club's directory and how much information will be available.</h4>
   Name<input type="checkbox" name="permission" value="pname" checked>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  Phone<input type="checkbox" name="permission" value="pphone" checked>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  Email<input type="checkbox" name="permission" value="pemail" checked><br><br>   
-  How did you hear about us?
-  State:&nbsp<input type="text" name="hearabout"><br><br>
-  </form>
+  <span class="tab3">Phone<input type="checkbox" name="permission" value="pphone" checked></span>
+  <span class="tab1">Email<input type="checkbox" name="permission" value="pemail" checked></span><br><br>
+  How did you hear about us?&nbsp<input type="text" name="hearabout" placeholder="friend (name), online, at concert/event"><br><br>
+  Favorite Buffett Song:&nbsp<input type="text" name="hearabout"><br><br>
+  Favorite Buffett Lyric:&nbsp<input type="text" name="hearabout"><br><br>
+  My One Particular Harbor is:&nbsp<input type="text" name="hearabout"><br><br>
+  I like mine with...&nbsp<input type="text" name="hearabout"><br><br>
+  What kinds of events would you like to volunteer for:<br>
+    <span class="tab0"><input type="checkbox" name="volunteer" value="vchill">&nbsp;Summer Chi.ILL Event</span><br>
+    <span class="tab0"><input type="checkbox" name="volunteer" value="vcordia">&nbsp;Misericordia Events</span><br>
+    <span class="tab0"><input type="checkbox" name="volunteer" value="valz">&nbsp;Alzheimer's Walk</span><br>
+    <span class="tab0"><input type="checkbox" name="volunteer" value="vtail">&nbsp;Tailgating</span><br>
+    <span class="tab0"><input type="checkbox" name="volunteer" value="vhouse">&nbsp;House Concerts-hosting</span><br>
+    <span class="tab0"><input type="checkbox" name="volunteer" value="vhighway">&nbsp;Adopt-A-Highway</span><br><br>
+    Anything we forgot&nbsp<input type="text" name="forgot"><br><br>
+</div>
+<hr>
+    Completion of this application and payment of dues is your consent to membership in this organization.
+    <br /><br />
+    As member you agree to bylaws adopted by the membership of the Chicago Parrot Head Club as well
+    as Parrot Heads In Paradise, Inc., and the use of the above information by the club for matters pertaining to
+    its operation and events. Activities organized by the club are for enjoyment of the membership of
+    the Chicago Parrot Head Club. Our officers or members are not liable for any injury, loss or damage of
+    personal property. Each member is responsible for his or her own behavior as well as that of their children.
+    Chicago Parrot Heads, its members and its officers will not be responsible for your actions during your
+    association with the organization. This contribution is not deductible as a charitable contribution for
+    Federal Income Tax purposes per PHIP bylaws. The terms Jimmy Buffett, Margaritaville, Parrot Head(s),
+    Parrothead(s), Parrot Head Club, Parrothead Club and PHC are registered trademarks of Margaritaville Inc.
+    <br /><br>
+    <div style="line-height:160%;">
+      Signature (initials):&nbsp<input type="text" name="membersignature"><br>
+      <div id="comemsignature">
+        CoMember Signature (initials):&nbsp<input type="text" name="comembersignature">
+      </div>
+    </div><br>
+<hr>
+    <b>Renewal Fee Structure</b><br />
+    Renewal payment of dues by current members will be made annually in September, being the anniversary month of CPHC.<br /><br />
+    <b>New Member Fee Structure</b><br />
+    New Members (per current By-Laws), joining the club after the annual renewal date (September 31) will pay a prorated amount
+    of 75% for the first quarter rounded up, 50% for the second quarter rounded up, 25% for the third quarter
+    rounded up, and within the fourth quarter will pay the full amount of membership up until the next years renewal date.
+    Any member who joins CPHC under the reduced prorated rate but does not pay in full at the next scheduled
+    annual renewal must pay the full membership amount before being considered for any Club benefits as stated
+    within CPHC by-laws for the next calendar year.
+    <br>
+<hr>
+    Our Meetings are at 7:30 pm, every third Wednesday of the Month at:<br />
+    HB Jones<br>
+    551 S York St<br>
+    Elmhurst, IL 60126<br>
+<hr>
+    Submit application and proceed to paypal<br>
+    <input type="submit"><br>
+    **************************************************************<br>
+    If Payment is not completed, application will not be submitted<br>
+    **************************************************************<br>
+</form>
 </body>
 </html>
